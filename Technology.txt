@@ -1,0 +1,22 @@
+screen
+mouse
+server
+computer
+keyboard
+printer
+database
+bytes
+hyperlink
+laptop
+ram
+rom
+cpu
+gpu
+linux
+windows
+ethrnet
+hard drive
+code
+programming
+
+
