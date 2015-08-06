@@ -15,7 +15,7 @@ enum class Catergories
   Uninitialized
 };
 
-//when the fucntion is called it store the files content into a passed array
+//when the function is called it store the files content into a passed array
 void FiletoArray(std::ifstream &file, std::vector<std::string> &array, std::string &currentLine);
 void MainLoop(std::string currentWord);		//the main game loop
 void Clear();					//prints 20 empty lines
@@ -28,7 +28,7 @@ void Hangman6();
 void Hangman7();
 void Hangman8();
 void UpdateHangman(int hangmanNumber);
-void PrintWord(std::string currentWord);	//iterate throught the word and prints a space or a * for a letter
+void PrintWord(std::string currentWord);	//iterate through the word and prints a space or a * for a letter
 
 int main(int argc, char* argv[])
 {
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
   string foodTextFile = "Food.txt";
   string technologyTextFile = "Technology.txt";
  
-  //if the user passes in the name of the file, overide the default variable to the passed in variable  
+  //if the user passes in the name of the files, override the default variable to the passed in arguments  
   if(argc > 1)
   {
     countryTextFile = argv[1];
@@ -48,15 +48,18 @@ int main(int argc, char* argv[])
   }
   
   string currentLine;
-  ifstream countreisFile(countryTextFile);
+
+  //variables to open a text stream(the file name is passed in)
+  ifstream countriesFile(countryTextFile);
   ifstream foodFile(foodTextFile);
   ifstream technologyFile(technologyTextFile);
   
+  //these arrays store the hangman words
   std::vector<std::string> countriesArray{};
   std::vector<std::string> foodArray{};
   std::vector<std::string> technologyArray{};
   
-  FiletoArray(countreisFile, countriesArray, currentLine);
+  FiletoArray(countriesFile, countriesArray, currentLine);	//This function 
   FiletoArray(foodFile, foodArray, currentLine);
   FiletoArray(technologyFile, technologyArray, currentLine);
 
@@ -66,31 +69,31 @@ int main(int argc, char* argv[])
   bool isValidCatergory = false;
   Catergories catergory = Catergories::Uninitialized;
 
-  // 
+  //repeat the loop  
   while(!isValidCatergory)
   {
-    cout << "Choose the number of catergory to play hangman :)" << endl;
-    cout << "1.Countries" << "\t" "2.Food" << "\t" << "\t" << "3.Techonlogy" << endl;
+    cout << "Choose the number of category to play hangman :)" << endl;
+    cout << "1.Countries" << "\t" "2.Food" << "\t" << "\t" << "3.Technology" << endl;
     
     getline(cin, useresCatergory);
     useresCatergoryNumber = atoi(useresCatergory.c_str());
     
     if(useresCatergoryNumber == 1)
     {
-      cout << "Countries? niceee" << endl;
+      cout << "Countries? Cool" << endl;
       catergory = Catergories::Countries;
       isValidCatergory = true;
     }
     if(useresCatergoryNumber == 2)
     {
-      cout << "Food? niceee" << endl;
+      cout << "Food? Cool" << endl;
       catergory = Catergories::Food;
       isValidCatergory = true;
       
     }
     if(useresCatergoryNumber == 3)
     {
-      cout << "Technology? niceee" << endl;   
+      cout << "Technology? Cool" << endl;   
       catergory = Catergories::Technology;
       isValidCatergory = true;
 
@@ -104,7 +107,7 @@ int main(int argc, char* argv[])
     srand(time(0));
     randomNumberGenerated = rand()%countriesArray.size();
     currentWord = countriesArray[randomNumberGenerated];
-    PrintWord(currentWord);
+    //PrintWord(currentWord);
     MainLoop(currentWord);
   }
   else if(catergory == Catergories::Food)
@@ -112,7 +115,7 @@ int main(int argc, char* argv[])
     srand(time(0));
     randomNumberGenerated = rand()%foodArray.size();
     currentWord = foodArray[randomNumberGenerated];
-    PrintWord(currentWord);
+    //PrintWord(currentWord);
     MainLoop(currentWord);
   }
   
@@ -121,7 +124,7 @@ int main(int argc, char* argv[])
     srand(time(0));
     randomNumberGenerated = rand()%technologyArray.size();
     currentWord = technologyArray[randomNumberGenerated];
-    PrintWord(currentWord);
+    //PrintWord(currentWord);
     MainLoop(currentWord);
   }
   
@@ -132,9 +135,23 @@ void MainLoop(std::string  currentWord)
 {
   using namespace std;
   
-  int wrongGuesses = 0;
+  int wrongGuesses = 1;
   UpdateHangman(wrongGuesses);
-  
+  wrongGuesses = 0;
+  std::string guessedWord = "";
+
+  for(unsigned int i = 0; i < currentWord.size(); i++)
+  {
+     if(currentWord[i] == ' ')
+     {
+       guessedWord.push_back(' ');
+     }
+     else
+     {
+      guessedWord.push_back('*');
+     }
+  }
+
   while(1)
   {
     
@@ -155,54 +172,35 @@ void MainLoop(std::string  currentWord)
       }
     }
     
+  //turn any upper case into lower case
   std::transform(guess.begin(), guess.end(), guess.begin(), ::tolower);
-
+ 
+  
+  //if the guess is correct
   if(currentWord.find(guess.c_str()) != string::npos)
   {
-    //if guess is correct
     Clear();
     UpdateHangman(wrongGuesses);
+  
 
     for(unsigned int i = 0; i < currentWord.size(); i++)
     {
-      if(currentWord[i] == ' ')
+      if(currentWord[i] == guess[0])
       {
-	  std::cout << " ";
+	 guessedWord[i] = guess[0];
       }
-      else
-      {
-	if(currentWord[i] == guess[0])
-	{
-	  std::cout << guess;
-	}
-	else
-	{
-	  std::cout << "*";
-	}
-      }
-      
     }
-    cout << endl;
+    cout << "Guessed Word: " << guessedWord << endl;
+    cout << "guess: " << guess[0] << endl;
+    cout << "Current Word: " << currentWord << endl;
   }
   
   else
   {
-    wrongGuesses++;
+    ++wrongGuesses;
     Clear();
     UpdateHangman(wrongGuesses);
     cout << "Sorry that's not in the word!\t" << "you got: " << 8 - wrongGuesses << " chances left"<< endl;
-    for(unsigned int i = 0; i < currentWord.size(); i++)
-    {
-     if(currentWord[i] == ' ')
-     {
-	std::cout << " ";
-     }
-     else
-     {
-	std::cout << "*";
-     }
-    }
-   cout << endl;
   }
   if(wrongGuesses == 8)
   {
