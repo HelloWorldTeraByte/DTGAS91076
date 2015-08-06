@@ -137,7 +137,6 @@ void MainLoop(std::string  currentWord)
   
   int wrongGuesses = 1;
   UpdateHangman(wrongGuesses);
-  wrongGuesses = 0;
   std::string guessedWord = "";
 
   for(unsigned int i = 0; i < currentWord.size(); i++)
@@ -151,6 +150,9 @@ void MainLoop(std::string  currentWord)
       guessedWord.push_back('*');
      }
   }
+  
+  cout << guessedWord << endl;
+  cout << currentWord << endl;
 
   while(1)
   {
@@ -172,42 +174,44 @@ void MainLoop(std::string  currentWord)
       }
     }
     
-  //turn any upper case into lower case
-  std::transform(guess.begin(), guess.end(), guess.begin(), ::tolower);
+   //turn any upper case into lower case
+   std::transform(guess.begin(), guess.end(), guess.begin(), ::tolower);
  
   
-  //if the guess is correct
-  if(currentWord.find(guess.c_str()) != string::npos)
-  {
-    Clear();
-    UpdateHangman(wrongGuesses);
-  
+   //if the guess is correct
+   if(currentWord.find(guess.c_str()) != string::npos)
+   {
+     Clear();
+     UpdateHangman(wrongGuesses);
 
-    for(unsigned int i = 0; i < currentWord.size(); i++)
-    {
-      if(currentWord[i] == guess[0])
-      {
+     for(unsigned int i = 0; i < currentWord.size(); i++)
+     {
+       if(currentWord[i] == guess[0])
+       {
 	 guessedWord[i] = guess[0];
-      }
-    }
-    cout << "Guessed Word: " << guessedWord << endl;
-    cout << "guess: " << guess[0] << endl;
-    cout << "Current Word: " << currentWord << endl;
-  }
+       }
+     }
+     cout << guessedWord << endl;
+     //cout << "Guessed Word: " << guessedWord << endl;
+     //cout << "guess: " << guess[0] << endl;
+     //cout << "Current Word: " << currentWord << endl;
+   }
   
-  else
-  {
-    ++wrongGuesses;
-    Clear();
-    UpdateHangman(wrongGuesses);
-    cout << "Sorry that's not in the word!\t" << "you got: " << 8 - wrongGuesses << " chances left"<< endl;
+   else
+   {
+     ++wrongGuesses;
+     Clear();
+     UpdateHangman(wrongGuesses);
+     cout << guessedWord << endl;
+     cout << "Sorry that's not in the word!\t" << "you got: " << 8  - wrongGuesses << " chances left"<< endl;
+   }
+   if(wrongGuesses == 8)
+   {
+     cout << "Game Over" << endl;
+     break;
+   }
+
   }
-  if(wrongGuesses == 8)
-  {
-    cout << "Game Over" << endl;
-    break;
-  }
- }
 }
 
 void UpdateHangman(int hangmanNumber)
@@ -242,7 +246,7 @@ void UpdateHangman(int hangmanNumber)
       Hangman8();
       break;
     default:
-      std::cout << "Error!" << std::endl;
+      std::cout << "Error! default case!" << std::endl;
       break;
   }
 
