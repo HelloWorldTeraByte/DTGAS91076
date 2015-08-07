@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
   bool isValidCatergory = false;
   Catergories catergory = Catergories::Uninitialized;
 
-  //repeat the loop  
+  //repeat the loop till a valid catergory is chosen 
   while(!isValidCatergory)
   {
     cout << "Choose the number of category to play hangman :)" << endl;
@@ -102,6 +102,7 @@ int main(int argc, char* argv[])
   int randomNumberGenerated;
   string currentWord;
   
+  //set the catergory enum accrording to the users selection
   if(catergory == Catergories::Countries)
   {
     srand(time(0));
@@ -131,6 +132,7 @@ int main(int argc, char* argv[])
   return 0;
 }
 
+//Main game loop
 void MainLoop(std::string  currentWord)
 {
   using namespace std;
@@ -140,6 +142,7 @@ void MainLoop(std::string  currentWord)
   std::string guessedWord = "";
   std::vector<std::string> guessedLetters{};
 
+  //fill the guessedWord variable with * to initialize the variable
   for(unsigned int i = 0; i < currentWord.size(); i++)
   {
      if(currentWord[i] == ' ')
@@ -152,8 +155,9 @@ void MainLoop(std::string  currentWord)
      }
   }
   
+  //print out the curently guessed word
   cout << guessedWord << endl;
-  cout << currentWord << endl;
+  //cout << currentWord << endl;
 
   while(1)
   {
@@ -161,6 +165,7 @@ void MainLoop(std::string  currentWord)
     bool aValidLetter = false;
     string guess;
     
+    //repeat the loop until a valid letter is entered 
     while(!aValidLetter)
     {
       cout << "Guess a letter in the word :)\t";
@@ -178,6 +183,7 @@ void MainLoop(std::string  currentWord)
    //turn any upper case into lower case
    std::transform(guess.begin(), guess.end(), guess.begin(), ::tolower);
    
+   //add the guess letter to the guessedLetters array only if there is no previous guess entry(to avoid doubles)
    if(!(std::find(guessedLetters.begin(), guessedLetters.end(), guess) !=guessedLetters.end()))
    {
      guessedLetters.push_back(guess);
@@ -189,8 +195,10 @@ void MainLoop(std::string  currentWord)
      Clear();
      UpdateHangman(wrongGuesses);
 
+     //loop throush the current word
      for(unsigned int i = 0; i < currentWord.size(); i++)
      {
+       //if the current letter equals the guess replace the * of the guessedWord with the guess letter
        if(currentWord[i] == guess[0])
        {
 	 guessedWord[i] = guess[0];
@@ -198,6 +206,8 @@ void MainLoop(std::string  currentWord)
      }
      cout << guessedWord << endl;
      cout << "You already guessed: ";
+
+     //print the already guessed letters array
      for(unsigned int i = 0; i < guessedLetters.size(); i++)
      {
 	  cout << guessedLetters[i];
@@ -210,12 +220,15 @@ void MainLoop(std::string  currentWord)
   
    else
    {
+     //increase the wrong guesses
      ++wrongGuesses;
      Clear();
      UpdateHangman(wrongGuesses);
 
      cout << guessedWord << endl;
      cout << "You already guessed: ";
+
+     //print the already guessed array
      for(unsigned int i = 0; i < guessedLetters.size(); i++)
      {
 	  cout << guessedLetters[i];
@@ -223,11 +236,15 @@ void MainLoop(std::string  currentWord)
      cout << endl;
      cout << "Sorry that's not in the word!\t" << "you got: " << 8  - wrongGuesses << " chances left"<< endl;
    }
-   if(wrongGuesses == 8)
+
+   //if the user gets more than 8 wrong the game is over 
+   if(wrongGuesses >= 8)
    {
      cout << "Game Over" << endl;
      break;
    }
+
+   //if no * are found in the guessedWord the user have won 
    if(guessedWord.find('*') == string::npos)
    {
 	cout << "You won!, Thanks for playing :)" << endl;
@@ -292,10 +309,13 @@ void PrintWord(std::string currentWord)
    std::cout << std::endl;
 }
 
+//function to copy data from the file to the passed in array
 void FiletoArray(std::ifstream &file, std::vector<std::string> &array, std::string &currentLine)
 {
+  //open the file
   if(file.is_open())
   {
+    //read the data from the file line by line and store it in the array
     while(file)
     {
       getline(file, currentLine);
@@ -309,6 +329,7 @@ void FiletoArray(std::ifstream &file, std::vector<std::string> &array, std::stri
   {
     std::cout << "Cant open file" << std::endl;
   }
+  file.close();
 }
 void Clear()
 {
