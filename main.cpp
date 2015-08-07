@@ -138,6 +138,7 @@ void MainLoop(std::string  currentWord)
   int wrongGuesses = 1;
   UpdateHangman(wrongGuesses);
   std::string guessedWord = "";
+  std::vector<std::string> guessedLetters{};
 
   for(unsigned int i = 0; i < currentWord.size(); i++)
   {
@@ -176,7 +177,7 @@ void MainLoop(std::string  currentWord)
     
    //turn any upper case into lower case
    std::transform(guess.begin(), guess.end(), guess.begin(), ::tolower);
- 
+   guessedLetters.push_back(guess); 
   
    //if the guess is correct
    if(currentWord.find(guess.c_str()) != string::npos)
@@ -192,6 +193,7 @@ void MainLoop(std::string  currentWord)
        }
      }
      cout << guessedWord << endl;
+     cout << guessedLetters[0];
      //cout << "Guessed Word: " << guessedWord << endl;
      //cout << "guess: " << guess[0] << endl;
      //cout << "Current Word: " << currentWord << endl;
@@ -210,7 +212,11 @@ void MainLoop(std::string  currentWord)
      cout << "Game Over" << endl;
      break;
    }
-
+   if(guessedWord.find('*') == string::npos)
+   {
+	cout << "You won!, Thanks for playing :)" << endl;
+	break;
+   }
   }
 }
 
