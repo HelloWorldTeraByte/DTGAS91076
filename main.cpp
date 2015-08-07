@@ -177,8 +177,12 @@ void MainLoop(std::string  currentWord)
     
    //turn any upper case into lower case
    std::transform(guess.begin(), guess.end(), guess.begin(), ::tolower);
-   guessedLetters.push_back(guess); 
-  
+   
+   if(!(std::find(guessedLetters.begin(), guessedLetters.end(), guess) !=guessedLetters.end()))
+   {
+     guessedLetters.push_back(guess);
+   }
+
    //if the guess is correct
    if(currentWord.find(guess.c_str()) != string::npos)
    {
@@ -193,7 +197,12 @@ void MainLoop(std::string  currentWord)
        }
      }
      cout << guessedWord << endl;
-     cout << guessedLetters[0];
+     cout << "You already guessed: ";
+     for(unsigned int i = 0; i < guessedLetters.size(); i++)
+     {
+	  cout << guessedLetters[i];
+     }
+     cout << endl;
      //cout << "Guessed Word: " << guessedWord << endl;
      //cout << "guess: " << guess[0] << endl;
      //cout << "Current Word: " << currentWord << endl;
@@ -204,7 +213,14 @@ void MainLoop(std::string  currentWord)
      ++wrongGuesses;
      Clear();
      UpdateHangman(wrongGuesses);
+
      cout << guessedWord << endl;
+     cout << "You already guessed: ";
+     for(unsigned int i = 0; i < guessedLetters.size(); i++)
+     {
+	  cout << guessedLetters[i];
+     }
+     cout << endl;
      cout << "Sorry that's not in the word!\t" << "you got: " << 8  - wrongGuesses << " chances left"<< endl;
    }
    if(wrongGuesses == 8)
