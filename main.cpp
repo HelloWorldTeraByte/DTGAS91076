@@ -18,7 +18,9 @@ enum class Catergories
 //when the function is called it store the files content into a passed array
 void FiletoArray(std::ifstream &file, std::vector<std::string> &array, std::string &currentLine);
 void MainLoop(std::string currentWord);		//the main game loop
-void Clear();					//prints 20 empty lines
+void Clear();								//prints 20 empty lines
+
+//fucntions to display the hangman
 void Hangman1();
 void Hangman2();
 void Hangman3();
@@ -59,15 +61,14 @@ int main(int argc, char* argv[])
   std::vector<std::string> foodArray{};
   std::vector<std::string> technologyArray{};
   
-  FiletoArray(countriesFile, countriesArray, currentLine);	//This function 
-  FiletoArray(foodFile, foodArray, currentLine);
-  FiletoArray(technologyFile, technologyArray, currentLine);
+  FiletoArray(countriesFile, countriesArray, currentLine);	//This reads from the text file and store that data in the passed in array/vector
+  FiletoArray(foodFile, foodArray, currentLine);			//This reads from the text file and store that data in the passed in array/vector
+  FiletoArray(technologyFile, technologyArray, currentLine);//This reads from the text file and store that data in the passed in array/vector
 
-  
   string useresCatergory = "";
-  int useresCatergoryNumber = 0;
+  int useresCatergoryNumber = 0; //this stores the number of the users chosen catergory
   bool isValidCatergory = false;
-  Catergories catergory = Catergories::Uninitialized;
+  Catergories catergory = Catergories::Uninitialized; //intialize the variable as null so if the loop fails it is easier to debug
 
   //repeat the loop till a valid catergory is chosen 
   while(!isValidCatergory)
@@ -75,9 +76,12 @@ int main(int argc, char* argv[])
     cout << "Choose the number of category to play hangman :)" << endl;
     cout << "1.Countries" << "\t" "2.Food" << "\t" << "\t" << "3.Technology" << endl;
     
-    getline(cin, useresCatergory);
+    getline(cin, useresCatergory);		//store the users input in the usersCatergory variable
     useresCatergoryNumber = atoi(useresCatergory.c_str());
     
+	//test the input, if not valid loop throught the loop
+	//if the input is valid set the isValidCatergory variable to true, this makes the loop to break and continue the program
+	//also set the catergory variable accordingly
     if(useresCatergoryNumber == 1)
     {
       cout << "Countries? Cool" << endl;
@@ -102,7 +106,8 @@ int main(int argc, char* argv[])
   int randomNumberGenerated;
   string currentWord;
   
-  //set the catergory enum accrording to the users selection
+  //generate a random word from the vector/array according to users selection
+  //then enter the main game loop, also pass in the randomly chosen word
   if(catergory == Catergories::Countries)
   {
     srand(time(0));
