@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     FiletoArray(foodFile, foodArray, currentLine);		//This reads from the text file and store that data in the passed in array/vector
     FiletoArray(technologyFile, technologyArray, currentLine);	//This reads from the text file and store that data in the passed in array/vector
 
-    string useresCatergory = "";
+    string useresCatergory = "";				//this handles raw data from the buffer used and string so I can test it easier
     int useresCatergoryNumber = 0;				//this stores the number of the users chosen catergory
     bool isValidCatergory = false;
     Catergories catergory = Catergories::Uninitialized;		//intialize the variable as null so if the loop fails it is easier to debug
@@ -245,6 +245,7 @@ void MainLoop(std::string  currentWord)
 	if(wrongGuesses >= 8)
 	{
 	    cout << "Game Over" << endl;
+	    cout << "The word was: " << currentWord << endl;
 	    break;
 	}
 
